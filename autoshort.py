@@ -6,11 +6,11 @@ def findstart(list, rows, cols):
                 return [i, j]
     return [-1, -1]
 
-queue = []
+vchen = []
 visited = []
 
 def popnew(list, cur, rows, cols) -> bool:
-    queue.pop(0)
+    vchen.pop(0)
     print(cur[0], end= ' ')
     print(cur[1])
     for i in range(-1, 2):
@@ -28,7 +28,7 @@ def popnew(list, cur, rows, cols) -> bool:
                             if list[r][c] == 'e':
                                 return True
                             print("append")
-                            queue.append([r, c])
+                            vchen.append([r, c])
                             visited[r][c] = True
                     except:
                         print("fail")
@@ -38,7 +38,7 @@ def popnew(list, cur, rows, cols) -> bool:
 def autoshort(list, rows, cols) -> int:
     global visited
     start = findstart(list, rows, cols)
-    queue.append(start)
+    vchen.append(start)
     # print(start[0])
     # print(start[1])
 
@@ -50,10 +50,10 @@ def autoshort(list, rows, cols) -> int:
     steps = 0
     while steps < 5:
         steps += 1
-        length = len(queue)
+        length = len(vchen)
         print(f"len = {length}")
         for i in range(length):
-            if popnew(list, queue[0], rows, cols):
+            if popnew(list, vchen[0], rows, cols):
                 return steps
     return -1
         
