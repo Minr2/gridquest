@@ -5,13 +5,25 @@ array = []
 #setting zone - dangerous
 rows = 2
 cols = 3
+game = True
+
+#positions
+S_row = 0
+S_col = 0
+
+E_row = 1
+E_col = 2
+
+X_pos = [0,1]
+
+Player_row = S_row
+Player_col = S_col
 
 # grid zone
 def grid():
     global array, rows, cols
     for _ in range(rows):
         array.append([1] * cols)
-    return array
 
 def set_X():
     global X_pos
@@ -26,31 +38,62 @@ def set_End():
     array[E_row][E_col] = "E"
 
 def Setup():
+    grid()
     set_Start()
     set_End()
     set_X()
 
 def output():
-    for x in range(rows):
-        print(array[x])
+    rdisplay = [row[:] for row in array]
+
+    rdisplay[Player_row][Player_col] = "P"
+
+    for x in range(len(rdisplay)):
+        print(rdisplay[x])
 
 #player zone
 
-S_row = 0
-S_col = 0
-E_row = 1
-E_col = 2
-X_pos = [0,1]
+def canmove(row,col):
+    if row < 0 or row >= rows or col < 0 or col >= cols:
+        return False
 
-def init_Player():
-    global PlayerX,PlayerY
-    PlayerX = S_row
-    PlayerY = S_col
-
+    elif array[row][col] == 0:
+        return False
+    
+    else:
+        return True
 
 # testing zone...
-grid()
-set_Start()
-set_End()
-set_X()
+Setup()
 output()
+
+#gamezone!
+
+while game == True:
+    x = str(input("Move with W/A/S/D"))
+
+    nrow = Player_row
+    ncol = Player_col
+
+    if x == "W":
+        nrow -=1
+    elif x == "S":
+        nrow += 1
+    elif x == "A":
+        ncol -=1
+    elif x == "D":
+        ncol += 1
+    
+    if canmove(nrow, ncol) == True:
+        Player_row = nrow
+        Player_col = ncol
+    else:
+        print("nah")
+    
+    output()
+
+    if Player_row == E_row and Player_col == E_col:
+        print("yay")
+        game = False
+    
+    
