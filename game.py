@@ -97,21 +97,22 @@ chosen = random.choice(puzzles)
 array = []
 
 #setting zone - dangerous
-rows = 2
-cols = 3
-game = True
+rows = chosen["rows"]
+cols = chosen["cols"]
 
 #positions
-S_row = 0
-S_col = 0
+S_row = chosen["S"][0]
+S_col = chosen["S"][1]
 
-E_row = 1
-E_col = 2
+E_row = chosen["E"][0]
+E_col = chosen["E"][1]
 
-X_pos = [0,1]
+X_pos = chosen["X"]
 
 Player_row = S_row
 Player_col = S_col
+
+game = True
 
 # grid zone
 def grid():
@@ -121,7 +122,11 @@ def grid():
 
 def set_X():
     global X_pos
-    array[X_pos[0]][X_pos[1]] = 0 #0th index!
+
+    for x in X_pos:
+        row = x[0]
+        col = x[1]
+        array[row][col] = 0 #0th index!
 
 def set_Start():
     global S_row,S_col
@@ -142,8 +147,10 @@ def output():
 
     rdisplay[Player_row][Player_col] = "P"
 
-    for x in range(len(rdisplay)):
-        print(rdisplay[x])
+    for row in rdisplay:
+        print(row)
+    
+    print()
 
 #player zone
 
