@@ -171,19 +171,31 @@ output()
 #gamezone!
 
 while game == True:
-    x = str(input("Move with W/A/S/D"))
+    x = str(input("Move with W/A/S/D/WD/SD/AS/WA"))
 
     nrow = Player_row
     ncol = Player_col
 
-    if x == "W":
+    if x == "W" or x == "w":
         nrow -=1
-    elif x == "S":
+    elif x == "S" or x == "s":
         nrow += 1
-    elif x == "A":
+    elif x == "A" or x == "a":
         ncol -=1
-    elif x == "D":
+    elif x == "D" or x == "d":
         ncol += 1
+    elif x == "WD" or x == "wd":
+        nrow -=1
+        rcol +=1
+    elif x == "SD" or x == "sd":
+        nrow += 1
+        ncol += 1
+    elif x == "AS" or x == "as":
+        ncol -=1
+        nrow += 1
+    elif x == "WA" or x == "wa":
+        nrow -=1
+        ncol -=1
     
     if canmove(nrow, ncol) == True:
         Player_row = nrow
@@ -196,5 +208,4 @@ while game == True:
     if Player_row == E_row and Player_col == E_col:
         print("yay")
         game = False
-    
     
