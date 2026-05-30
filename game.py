@@ -186,7 +186,7 @@ while game == True:
         ncol += 1
     elif x == "WD" or x == "wd":
         nrow -=1
-        rcol +=1
+        ncol +=1
     elif x == "SD" or x == "sd":
         nrow += 1
         ncol += 1
