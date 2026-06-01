@@ -61,7 +61,7 @@ beginner_puzzles = [
         "cols": 5,
         "S": (3, 3),
         "E": (2, 2),
-        "X": [(1, 1), (1, 3), (2, 1), (2, 3), (3, 1), (3, 2), (3, 3)],
+        "X": [(1, 1), (1, 3), (2, 1), (2, 3), (3, 1), (3, 2)],
         "T": []
     },
 
@@ -153,9 +153,9 @@ Player_row = S_row
 Player_col = S_col
 
 #stars
-collected_stars = {}
+collected_stars = set()
 totalstars = set(T_pos)
-visited = {}
+visited = set()
 visited.add((Player_row,Player_col))
 
 game = True
@@ -213,10 +213,10 @@ def canmove(row,col):
     if row < 0 or row >= rows or col < 0 or col >= cols:
         return False
 
-    elif array[row][col] == 0:
+    if array[row][col] == 0:
         return False
     
-    elif advmode == True:
+    if advmode == True:
         if (row,col) in visited:
             print("u already visited")
             return False
@@ -224,9 +224,8 @@ def canmove(row,col):
         if array[row][col] == "E" and collected_stars != totalstars:
             print("collect all stars first")
             return False
-    
-    else:
-        return True
+
+    return True
 
 # testing zone...
 Setup()
