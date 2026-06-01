@@ -1,4 +1,6 @@
-# calculate shortest distance
+# autoshort.py calculates the shortest distance via various algorithms (BFS, A*)
+
+
 def findstart(list, rows, cols):
     for i in range(rows):
         for j in range(cols):
