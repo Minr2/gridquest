@@ -3,7 +3,7 @@ import random
 
 # 0 or X = blocked, 1 = open, S = start, E = end, T = star
 
-puzzles = [
+beginner_puzzles = [
     {
         "rows": 4,
         "cols": 4,
@@ -102,7 +102,36 @@ puzzles = [
     }
 ]
 
-chosen = random.choice(puzzles)
+advanced_puzzles = [
+
+    {
+        "rows": 5,
+        "cols": 5,
+        "S": (3, 0),
+        "E": (2, 2),
+        "X": [(1, 1), (1, 2), (1, 3), (2, 3), (3, 3), (4, 0), (4, 1)],
+        "T": [(3, 4)]
+    },
+
+    {
+        "rows": 5,
+        "cols": 5,
+        "S": (3, 0),
+        "E": (0, 2),
+        "X": [(1, 1), (1, 3), (3, 3), (4, 0), (4, 1)],
+        "T": [(2, 3), (4, 3)]
+    }
+]
+
+difficulty = input("Choose difficulty: beginner/advanced").lower() #lower removes UPPERCASE
+
+if difficulty == "advanced":
+    chosen = random.choice(advanced_puzzles)
+    advmode = True
+else:
+    chosen = random.choice(beginner_puzzles)
+    advmode= False
+
 
 array = []
 
@@ -122,6 +151,12 @@ T_pos = chosen["T"]
 
 Player_row = S_row
 Player_col = S_col
+
+#stars
+collected_stars = {}
+totalstars = set(T_pos)
+visited = {}
+visited.add((Player_row,Player_col))
 
 game = True
 
@@ -181,6 +216,15 @@ def canmove(row,col):
     elif array[row][col] == 0:
         return False
     
+    elif advmode == True:
+        if (row,col) in visited:
+            print("u already visited")
+            return False
+        
+        if array[row][col] == "E" and collected_stars != totalstars:
+            print("collect all stars first")
+            return False
+    
     else:
         return True
 
@@ -220,12 +264,24 @@ while game == True:
     if canmove(nrow, ncol) == True:
         Player_row = nrow
         Player_col = ncol
+
+        if advmode == True:
+            visited.add((Player_row, Player_col))
+
+            if array[Player_row][Player_col] == "T":
+                collected_stars.add((Player_row, Player_col))
+                print("collected star")
     else:
         print("nah")
     
     output()
 
     if Player_row == E_row and Player_col == E_col:
-        print("yay")
-        game = False
+        if advmode == True:
+            if collected_stars == totalstars:
+                print("yay")
+                game = False
+        else:
+            print("yay")
+            game = False
     
