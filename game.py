@@ -1,7 +1,8 @@
 # main game file, handles backend
 import random
 
-import puzzles.py
+# 0 or X = blocked, 1 = open, S = start, E = end, T = star
+from puzzles import advanced_puzzles, beginner_puzzles
 
 difficulty = input("Choose difficulty: beginner/advanced").lower() #lower removes UPPERCASE
 
@@ -11,7 +12,6 @@ if difficulty == "advanced":
 else:
     chosen = random.choice(beginner_puzzles)
     advmode= False
-
 
 array = []
 
