@@ -27,10 +27,14 @@ def celltext(r,c):
     else:
         return ""
 
+grid = f"""<div style=" display: grid; grid-template-columns: repeat({cols},50px); width: fit-content;">"""
+
 for r in range(rows):
-    columns = st.columns(cols)
     for c in range(cols):
         txt = celltext(r,c)
-        with columns[c]:
-            st.markdown(f"""<div style=" width: 50px; height: 50px; border: 2px solid black; display: flex; align-items: center; justify-content: center; font-size: 24px;"> {txt} </div> """, unsafe_allow_html= True)
+        grid += f"""<div style=" width: 50px; height: 50px; border: 2px solid black; display: flex; align-items: center; justify-content: center; font-size: 24px;"> {txt} </div> """
+
+grid += "</div>"
+
+st.markdown(grid, unsafe_allow_html=True)
 
