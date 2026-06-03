@@ -1,4 +1,4 @@
-# game file for streamlit w/o input, while loops, and printing
+# Main backend file for game
 
 def setup(chosen):
     array = []
