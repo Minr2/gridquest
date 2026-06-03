@@ -57,7 +57,6 @@ with st.form("cmds", clear_on_submit = True, enter_to_submit = True):
 
 if submit:
     st.session_state.Player_row, st.session_state.Player_col = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array)
-    st.rerun()
 
-if st.session_state.Player_row == E_row and st.session_state.Player_col == E_col:
-    st.success("you reached the end!", icon="✅")
+    if st.session_state.Player_row == E_row and st.session_state.Player_col == E_col:
+        st.success("you reached the end!", icon="✅")
