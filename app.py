@@ -17,6 +17,8 @@ if "diff" not in st.session_state:
     if st.button("Advanced"):
         st.session_state.diff = "advanced"
         st.rerun()
+    
+    st.stop()
 
 st.title("GridQuest")
 
