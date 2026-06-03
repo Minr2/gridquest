@@ -1,91 +1,63 @@
-import heapq
+import astarbasic
 
-class Node:
-    def __init__(self, prev, state):
-        self.prev = prev
-        self.state = state
-        self.f = 0
-        self.g = 0
-        self.h = 0
+def aStaradvanced(grid, start, end, rows, cols, cps) -> list:
+    checked_states = {}
 
-    def __lt__(self, other):
-        if self.f == other.f:
-            return self.g > other.g
-        return self.f < other.f
-    
-def distance(pos1, pos2):
-    # min distance ignoring obstacles (underestimation)
-    return(max(abs(pos1[0] - pos2[0]), abs(pos1[1] - pos2[1])))
+    # finding distances between checkpoints
+    checkpoints = [(start[0], start[1])]
+    ind = 1
+    for i in range(rows):
+        for j in range(cols):
+           if grid[i][j] == 'T':
+                checkpoints.append((i, j))
+                ind += 1
+    checkpoints.append((end[0], end[1]))
 
-def aStar(grid, start, end, rows, cols) -> list:
-    start_n = Node(None, start)
+    cp_aStar = [[0 for _ in range(cps+2)] for _ in range(cps+2)]
 
-    # open_list is a heap
-    open_list = []
-    heapq.heappush(open_list, start_n)
+    for i in range(cps+2):
+        for j in range(cps+2):
+            if not i == j:
+                if not astarbasic.aStar(grid, checkpoints[i], checkpoints[j], rows, cols) == []:
+                    cp_aStar[i][j] = len(astarbasic.aStar(grid, checkpoints[i], checkpoints[j], rows, cols)) - 1
+                else:
+                    cp_aStar[i][j] = 9999999999
 
-    # set so we can do _ in _
-    closed_list = set()
-    closed_list.add(start)
-
-    # lowest g score for each coordinate
-    lowest_g = {start: 0}
-
-    while len(open_list) > 0:
-        cur_n = heapq.heappop(open_list)
-        closed_list.add(cur_n.state)
-
-        # reached end
-        if cur_n.state == end:
-            retpath = []
-            cur = cur_n
-            # like backtrack to find the tracked path
-            while cur is not None:
-                retpath.append(cur.state)
-                cur = cur.prev
-            # reversed list
-            return retpath[::-1]
+    def visit(mask, u):
+        # Using some bitmasking in this function
+        # check if everything is visited!
+        if mask == (1 << cps) -1:
+            # print(f'{u}. {cp_aStar[u][cps+1]}')
+            return cp_aStar[u][cps + 1], [cps + 1]
         
-        # find neighbours
-        neighbours = []
-        dirs = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
-        for dir in dirs:
-            nrow = cur_n.state[0] + dir[0]
-            ncol = cur_n.state[1] + dir[1]
-            if (nrow < 0 or nrow >= rows or ncol < 0 or ncol >= cols):
-                continue
-            if grid[nrow][ncol] == 'x':
-                continue
-            neighbours.append(Node(cur_n, (nrow, ncol)))
+        cur_state = (mask, u)
+        if cur_state in checked_states:
+            return checked_states[cur_state]
         
-        for neighbour in neighbours:
-            if neighbour.state in closed_list:
-                continue
+        min_dist = float('inf')
+        shortest_path = []
 
-            # now passed conditions, run a# again
-            neighbour.g += 1
-            neighbour.h = distance(neighbour.state, end)
-            neighbour.f = neighbour.g + neighbour.h
+        for i in range(cps):
+            # checks if visited (bitmask)
+            if not (mask & (1<<i)):
+                new_mask = mask | (1<<i)
+                # print(new_mask)
+                g, path = visit(new_mask, i+1)
+                # print(f'{u}  {i+1}   {cp_aStar[u][i+1]}     {g}')
+                f = cp_aStar[u][i+1] + g
 
-            if neighbour.state not in lowest_g or 1 + cur_n.g < lowest_g[neighbour.state]:
-                lowest_g[neighbour.state] = 1 + cur_n.g
-            
-            # print(closed_list)
-            heapq.heappush(open_list, neighbour)
+                if f < min_dist:
+                    min_dist = f
+                    shortest_path = [i+1] + path
 
+        checked_states[cur_state] = (min_dist, shortest_path)
+        return checked_states[cur_state]
 
-    
-    # uh just in case
-    return [(0, 0) * 9999]
-
-
-
-            
-
-
-
-
-
-
-
-    
+    final_min_dist, final_shortest_path = visit(0, 0)
+    output = [-1, []]
+    output[0] = final_min_dist
+    final_shortest_path = [0] + final_shortest_path
+    for i in range(cps + 1):
+        for j in range(1, len(astarbasic.aStar(grid, checkpoints[final_shortest_path[i]], checkpoints[final_shortest_path[i+1]], rows, cols))):
+            output[1].append((astarbasic.aStar(grid, checkpoints[final_shortest_path[i]], checkpoints[final_shortest_path[i+1]], rows, cols)[j]))
+    return output
