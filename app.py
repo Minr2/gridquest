@@ -61,7 +61,7 @@ if "diff" not in st.session_state:
     st.stop()
 
 st.title("GridQuest")
-timepassed = int(time.time() - st.session_state.start_time)
+timepassed = round((time.time() - st.session_state.start_time),2)
 timeleft = 60 - timepassed
 st.write(f"Time Left: {timeleft}s")
 st.write("Score: ",st.session_state.score)
