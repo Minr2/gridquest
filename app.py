@@ -1,11 +1,12 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import random
 from puzzles import beginner_puzzles
 
 st.title("GridQuest")
 
-chosen = beginner_puzzles[0]
+chosen = random.choice(beginner_puzzles)
 rows = chosen["rows"]
 cols = chosen["cols"]
 S_row = chosen["S"][0]
