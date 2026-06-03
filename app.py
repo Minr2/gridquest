@@ -7,7 +7,16 @@ from puzzles import advanced_puzzles
 from game import set, move
 
 if "diff" not in st.session_state:
-    st.switch_page("pages/diff_select.py")
+    st.title("GridQuest")
+    st.subheader("Select Difficulty")
+
+    if st.button("Beginner"):
+        st.session_state.diff = "beginner"
+        st.rerun()
+
+    if st.button("Advanced"):
+        st.session_state.diff = "advanced"
+        st.rerun()
 
 st.title("GridQuest")
 
