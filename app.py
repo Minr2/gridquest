@@ -69,15 +69,19 @@ with st.form("cmds", clear_on_submit = True, enter_to_submit = True):
     submit = st.form_submit_button("Enter")
 
 if submit:
+    st.session_state.msg = ""
+
     if advmode:
         st.session_state.blocksvisited.add((st.session_state.Player_row,st.session_state.Player_col))
-        st.session_state.Player_row, st.session_state.Player_col = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array,st.session_state.blocksvisited)
+        st.session_state.Player_row, st.session_state.Player_col,st.session_state.msg = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array,st.session_state.blocksvisited)
     else:
-        st.session_state.Player_row, st.session_state.Player_col = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array)
-
+        st.session_state.Player_row, st.session_state.Player_col,st.session_state.msg = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array)
 
     if st.session_state.array[st.session_state.Player_row][st.session_state.Player_col] == "T":
         st.session_state.stcollected.add((st.session_state.Player_row, st.session_state.Player_col))
+
+if "msg" in st.session_state and st.session_state.msg != "":
+    st.warning(st.session_state.msg)
 
 st.write(f"Stars: {len(st.session_state.stcollected)} / {len(st.session_state.totstars)}")
 

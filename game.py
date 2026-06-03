@@ -36,12 +36,12 @@ def canmove(row,col,array,visited=None):
     totrows = len(array)
     totcols = len(array[0])
     if row < 0 or row >= totrows or col < 0 or col >= totcols:
-        return False
+        return False, "out of bounds"
     if array[row][col] == 0:
-        return False
+        return False, "wall"
     if visited is not None and (row,col) in visited:
-        return False
-    return True
+        return False, "u visited that block"
+    return True, ""
 
 def move(Player_row, Player_col, x, array,visited=None): #x is input.
     nrow = Player_row
@@ -69,6 +69,8 @@ def move(Player_row, Player_col, x, array,visited=None): #x is input.
         nrow -=1
         ncol -=1
     
-    if canmove(nrow, ncol,array,visited):
-        return nrow,ncol
-    return Player_row,Player_col
+    allo, msg = canmove(nrow, ncol, array, visited)
+
+    if allo:
+        return nrow,ncol, ""
+    return Player_row,Player_col, msg
