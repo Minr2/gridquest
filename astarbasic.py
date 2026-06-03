@@ -53,7 +53,7 @@ def aStar(grid, start, end, rows, cols) -> list:
             ncol = cur_n.state[1] + dir[1]
             if (nrow < 0 or nrow >= rows or ncol < 0 or ncol >= cols):
                 continue
-            if grid[nrow][ncol] == '0':
+            if grid[nrow][ncol] == 0:
                 continue
             neighbours.append(Node(cur_n, (nrow, ncol)))
         
@@ -62,7 +62,7 @@ def aStar(grid, start, end, rows, cols) -> list:
                 continue
 
             # now passed conditions, run a# again
-            neighbour.g += 1
+            neighbour.g = cur_n.g + 1
             neighbour.h = distance(neighbour.state, end)
             neighbour.f = neighbour.g + neighbour.h
 
