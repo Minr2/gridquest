@@ -6,10 +6,16 @@ from puzzles import beginner_puzzles
 from puzzles import advanced_puzzles
 from game import set, move
 
+if "diff" not in st.session_state:
+    st.switch_page("pages/diff_select.py")
+
 st.title("GridQuest")
 
 if "chosen" not in st.session_state:
-    st.session_state.chosen = random.choice(beginner_puzzles) #https://docs.streamlit.io/develop/concepts/architecture/session-state
+    if st.session_state.diff == "beginner":
+        st.session_state.chosen = random.choice(beginner_puzzles) #https://docs.streamlit.io/develop/concepts/architecture/session-state
+    else:
+        st.session_state.chosen = random.choice(advanced_puzzles)
 chosen = st.session_state.chosen
 
 if "array" not in st.session_state:
