@@ -67,7 +67,7 @@ def move(Player_row, Player_col, x, array,visited=None): #x is input.
         nrow -=1
         ncol -=1
     
-    allo, msg = canmove(nrow, ncol, array, visited)
+    allo, msg = canmove(nrow, ncol, array)
 
     if allo:
         return nrow,ncol, ""
