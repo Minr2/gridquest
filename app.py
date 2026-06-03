@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import random
 from puzzles import beginner_puzzles
+from puzzles import advanced_puzzles
 from game import set, move
 
 st.title("GridQuest")
