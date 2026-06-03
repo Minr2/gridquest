@@ -25,7 +25,17 @@ T_pos = chosen["T"]
 
 if "Player_row" not in st.session_state: #init the start as P
     st.session_state.Player_row = S_row
+
+if "Player_col" not in st.session_state:
     st.session_state.Player_col = S_col
+
+
+with st.form("cmds", clear_on_submit = True, enter_to_submit = True):
+    urmove = st.text_input("Move with W/A/S/D/WD/SD/SA/WA")
+    submit = st.form_submit_button("Enter")
+
+if submit:
+    st.session_state.Player_row, st.session_state.Player_col = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array)
 
 def celltext(r,c):
     if r == st.session_state.Player_row and c == st.session_state.Player_col:
@@ -51,12 +61,5 @@ grid += "</div>"
 
 st.write(grid, unsafe_allow_html=True)
 
-with st.form("cmds", clear_on_submit = True, enter_to_submit = True):
-    urmove = st.text_input("Move with W/A/S/D/WD/SD/SA/WA")
-    submit = st.form_submit_button("Enter")
-
-if submit:
-    st.session_state.Player_row, st.session_state.Player_col = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array)
-
-    if st.session_state.Player_row == E_row and st.session_state.Player_col == E_col:
-        st.success("you reached the end!", icon="✅")
+if st.session_state.Player_row == E_row and st.session_state.Player_col == E_col:
+    st.success("you reached the end!", icon="✅")
