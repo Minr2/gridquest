@@ -32,15 +32,13 @@ def setup(chosen):
 
     return array
 
-def canmove(row,col,array,visited=None):
+def canmove(row,col,array):
     totrows = len(array)
     totcols = len(array[0])
     if row < 0 or row >= totrows or col < 0 or col >= totcols:
         return False, "out of bounds"
     if array[row][col] == 0:
         return False, "wall"
-    if visited is not None and (row,col) in visited:
-        return False, "u visited that block"
     return True, ""
 
 def move(Player_row, Player_col, x, array,visited=None): #x is input.
