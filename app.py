@@ -8,6 +8,20 @@ from game import setup, move
 
 if "diff" not in st.session_state:
     st.title("GridQuest")
+    st.subheader("How To Play")
+    st.markdown("""
+        Welcome to **GridQuest**!
+        Your goal is to move the player **P** from the start **S** to the end **E**.
+        To move, type commands into the box and press **Enter**. 
+        You can move in all four directions and diagonally.
+        You can not go through walls **X**.
+        
+        If you play Advanced Mode, you can not visit boxes already visited, and you must collect all stars **🌟**.
+        
+        You have **1 minute** to solve as much puzzles as possible.
+        You get **1 point** if you solve a puzzle and a **1 point bonus** for finding the shortest path.
+                """)
+
     st.subheader("Select Difficulty")
 
     if st.button("Beginner"):
@@ -98,7 +112,7 @@ def celltext(r,c):
     elif thingy == "S":
         return "S"
     elif thingy == "T":
-        return "*"
+        return "🌟"
 
 grid = f"""<div style=" display: grid; grid-template-columns: repeat({cols},50px); width: fit-content;">"""
 
