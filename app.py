@@ -22,6 +22,12 @@ if "diff" not in st.session_state:
 
 st.title("GridQuest")
 
+#adv mode
+if st.session_state.diff == "advanced":
+    advmode = True
+else:
+    advmode = False
+
 if "chosen" not in st.session_state:
     if st.session_state.diff == "beginner":
         st.session_state.chosen = random.choice(beginner_puzzles) #https://docs.streamlit.io/develop/concepts/architecture/session-state
@@ -54,13 +60,22 @@ if "stcollected" not in st.session_state:
 if "totstars" not in st.session_state:
     st.session_state.totstars = set(tuple(x) for x in T_pos)
 
+if advmode:
+    if "blocksvisited" not in st.session_state:
+        st.session_state.blocksvisited = set()
 
 with st.form("cmds", clear_on_submit = True, enter_to_submit = True):
     urmove = st.text_input("Move with W/A/S/D/WD/SD/SA/WA")
     submit = st.form_submit_button("Enter")
 
 if submit:
-    st.session_state.Player_row, st.session_state.Player_col = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array)
+    if advmode:
+        st.session_state.blocksvisited.add((st.session_state.Player_row,st.session_state.Player_col))
+        st.session_state.Player_row, st.session_state.Player_col = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array,st.session_state.blocksvisited)
+    else:
+        st.session_state.Player_row, st.session_state.Player_col = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array)
+
+
     if st.session_state.array[st.session_state.Player_row][st.session_state.Player_col] == "T":
         st.session_state.stcollected.add((st.session_state.Player_row, st.session_state.Player_col))
 

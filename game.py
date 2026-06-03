@@ -32,20 +32,20 @@ def setup(chosen):
 
     return array
 
-def canmove(row,col,array):
+def canmove(row,col,array,visited=None):
     totrows = len(array)
     totcols = len(array[0])
     if row < 0 or row >= totrows or col < 0 or col >= totcols:
         return False
     if array[row][col] == 0:
         return False
+    if visited is not None and (row,col) in visited:
+        return False
     return True
 
-def move(Player_row, Player_col, x, array): #x is input.
-    
+def move(Player_row, Player_col, x, array,visited=None): #x is input.
     nrow = Player_row
     ncol = Player_col
-
     x = x.lower()
 
     if x == "w":
@@ -69,6 +69,6 @@ def move(Player_row, Player_col, x, array): #x is input.
         nrow -=1
         ncol -=1
     
-    if canmove(nrow, ncol,array):
+    if canmove(nrow, ncol,array,visited):
         return nrow,ncol
     return Player_row,Player_col
