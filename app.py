@@ -39,3 +39,6 @@ grid += "</div>"
 
 st.write(grid, unsafe_allow_html=True)
 
+with st.form("cmds", clear_on_submit = True, enter_to_submit = True):
+    move = st.text_input("Move with W/A/S/D/WD/SD/SA/WA")
+    submit = st.form_submit_button("Enter")
