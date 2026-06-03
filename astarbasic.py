@@ -53,7 +53,7 @@ def aStar(grid, start, end, rows, cols) -> list:
             ncol = cur_n.state[1] + dir[1]
             if (nrow < 0 or nrow >= rows or ncol < 0 or ncol >= cols):
                 continue
-            if grid[nrow][ncol] == 'x':
+            if grid[nrow][ncol] == 'X':
                 continue
             neighbours.append(Node(cur_n, (nrow, ncol)))
         
