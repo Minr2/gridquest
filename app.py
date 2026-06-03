@@ -5,6 +5,8 @@ import random, time
 from puzzles import beginner_puzzles
 from puzzles import advanced_puzzles
 from game import setup, move
+import astarbasic
+import astaradvanced
 
 def newpuzzle():
     if st.session_state.diff == "beginner":
@@ -20,9 +22,20 @@ def newpuzzle():
     st.session_state.totstars = set(tuple(x) for x in chosen["T"])
     st.session_state.msg = ""
 
-    if st.session_state.diff == "advanced":
-        st.session_state.blocksvisited = set()
+    st.session_state.moves = 0
+    rows = chosen["rows"]
+    cols = chosen["cols"]
+    start = chosen["S"]
+    end = chosen["E"]
 
+    if st.session_state.diff == "beginner":
+        shortest_path = astarbasic.aStar(st.session_state.array, start, end, rows, cols)
+        st.session_state.shortest_moves = len(shortest_path) -1
+
+    if st.session_state.diff == "advanced":
+        resZ = astaradvanced.aStaradvanced(st.session_state.array, start, end, rows, cols, len(chosen["T"]))
+        st.session_state.shortest_moves = resZ[0]
+        st.session_state.blocksvisited = set()
 
 if "diff" not in st.session_state:
     st.title("GridQuest")
@@ -120,9 +133,10 @@ if submit:
     if advmode:
         st.session_state.blocksvisited.add((st.session_state.Player_row,st.session_state.Player_col))
         st.session_state.Player_row, st.session_state.Player_col,st.session_state.msg = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array,st.session_state.blocksvisited)
+        st.session_state.moves += 1
     else:
         st.session_state.Player_row, st.session_state.Player_col,st.session_state.msg = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array)
-
+        st.session_state.moves += 1
     if st.session_state.array[st.session_state.Player_row][st.session_state.Player_col] == "T":
         st.session_state.stcollected.add((st.session_state.Player_row, st.session_state.Player_col))
 
@@ -160,7 +174,11 @@ st.write(grid, unsafe_allow_html=True)
 if st.session_state.Player_row == E_row and st.session_state.Player_col == E_col:
     if st.session_state.stcollected == st.session_state.totstars:
         st.session_state.score += 1
-        st.success("puzzle solved, +1 point", icon="✅")
+        if st.session_state.moves == st.session_state.shortest_moves:
+            st.session_state.score += 1
+            st.success("puzzle solved with shortest, +2 points", icon="✅")
+        else:
+            st.success("puzzle solved, +1 point", icon="✅")
         newpuzzle()
         st.rerun()
     else:
