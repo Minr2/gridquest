@@ -67,6 +67,8 @@ def celltext(r,c):
         return "E"
     elif thingy == "S":
         return "S"
+    elif thingy == "T":
+        return "*"
 
 grid = f"""<div style=" display: grid; grid-template-columns: repeat({cols},50px); width: fit-content;">"""
 
