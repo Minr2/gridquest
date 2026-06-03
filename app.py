@@ -7,7 +7,7 @@ from puzzles import advanced_puzzles
 from game import set, move
 
 if "diff" not in st.session_state:
-    st.switch_page("pages/diff_select.py")
+    st.switch_page("diff_select.py")
 
 st.title("GridQuest")
 
