@@ -4,7 +4,7 @@ import numpy as np
 import random
 from puzzles import beginner_puzzles
 from puzzles import advanced_puzzles
-from game import set, move
+from game import setup, move
 
 if "diff" not in st.session_state:
     st.title("GridQuest")
@@ -30,7 +30,7 @@ if "chosen" not in st.session_state:
 chosen = st.session_state.chosen
 
 if "array" not in st.session_state:
-    st.session_state.array = set(chosen)
+    st.session_state.array = setup(chosen)
 
 rows = chosen["rows"]
 cols = chosen["cols"]
@@ -47,6 +47,13 @@ if "Player_row" not in st.session_state: #init the start as P
 if "Player_col" not in st.session_state:
     st.session_state.Player_col = S_col
 
+#stars seccion
+if "stcollected" not in st.session_state:
+    st.session_state.stcollected = set()
+
+if "totstars" not in st.session_state:
+    st.session_state.totstars = set(tuple(x) for x in T_pos)
+
 
 with st.form("cmds", clear_on_submit = True, enter_to_submit = True):
     urmove = st.text_input("Move with W/A/S/D/WD/SD/SA/WA")
@@ -54,6 +61,10 @@ with st.form("cmds", clear_on_submit = True, enter_to_submit = True):
 
 if submit:
     st.session_state.Player_row, st.session_state.Player_col = move(st.session_state.Player_row, st.session_state.Player_col, urmove, st.session_state.array)
+    if st.session_state.array[st.session_state.Player_row][st.session_state.Player_col] == "T":
+        st.session_state.stcollected.add(st.session_state.Player_row, st.session_state.Player_col)
+
+st.write(f"Stars: {len(st.session_state.stcollected)} / {len(st.session_state.totstars)}")
 
 def celltext(r,c):
     if r == st.session_state.Player_row and c == st.session_state.Player_col:
@@ -82,4 +93,7 @@ grid += "</div>"
 st.write(grid, unsafe_allow_html=True)
 
 if st.session_state.Player_row == E_row and st.session_state.Player_col == E_col:
-    st.success("you reached the end!", icon="✅")
+    if st.session_state.stcollected == st.session_state.totstars:
+        st.success("you reached the end!", icon="✅")
+    else:
+        st.success("u did NOT get all", icon="❌")

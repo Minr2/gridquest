@@ -1,6 +1,6 @@
 # game file for streamlit w/o input, while loops, and printing
 
-def set(chosen):
+def setup(chosen):
     array = []
     rows = chosen["rows"]
     cols = chosen["cols"]
