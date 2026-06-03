@@ -27,7 +27,7 @@ def aStaradvanced(grid, start, end, rows, cols, cps) -> list:
         # Using some bitmasking in this function
         # check if everything is visited!
         if mask == (1 << cps) -1:
-            print(f'{u}. {cp_aStar[u][cps+1]}')
+            # print(f'{u}. {cp_aStar[u][cps+1]}')
             return cp_aStar[u][cps + 1], [cps + 1]
         
         cur_state = (mask, u)
@@ -43,7 +43,7 @@ def aStaradvanced(grid, start, end, rows, cols, cps) -> list:
                 new_mask = mask | (1<<i)
                 # print(new_mask)
                 g, path = visit(new_mask, i+1)
-                print(f'{u}  {i+1}   {cp_aStar[u][i+1]}     {g}')
+                # print(f'{u}  {i+1}   {cp_aStar[u][i+1]}     {g}')
                 f = cp_aStar[u][i+1] + g
 
                 if f < min_dist:
@@ -58,6 +58,6 @@ def aStaradvanced(grid, start, end, rows, cols, cps) -> list:
     print(final_min_dist)
     final_shortest_path = [0] + final_shortest_path
     for i in range(cps + 1):
-        for j in range(1, len(astarbasic.aStar(grid, checkpoints[final_shortest_path[i]], checkpoints[final_shortest_path[i+1]], 5, 5))):
-            print(astarbasic.aStar(grid, checkpoints[final_shortest_path[i]], checkpoints[final_shortest_path[i+1]], 5, 5)[j])
+        for j in range(1, len(astarbasic.aStar(grid, checkpoints[final_shortest_path[i]], checkpoints[final_shortest_path[i+1]], rows, cols))):
+            print(astarbasic.aStar(grid, checkpoints[final_shortest_path[i]], checkpoints[final_shortest_path[i+1]], rows, cols)[j])
     return final_shortest_path
