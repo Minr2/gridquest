@@ -1,4 +1,4 @@
-# main game file, handles backend
+# This is an archived file, but feel free to see the previous Terminal-side progress.
 import random
 
 # 0 or X = blocked, 1 = open, S = start, E = end, T = star
