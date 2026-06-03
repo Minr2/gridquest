@@ -1,10 +1,28 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import random
+import random, time
 from puzzles import beginner_puzzles
 from puzzles import advanced_puzzles
 from game import setup, move
+
+def newpuzzle():
+    if st.session_state.diff == "beginner":
+        st.session_state.chosen = random.choice(beginner_puzzles)
+    else:
+        st.session_state.chosen = random.choice(advanced_puzzles)
+    chosen = st.session_state.chosen
+
+    st.session_state.array = setup(chosen)
+    st.session_state.Player_row = chosen["S"][0]
+    st.session_state.Player_col = chosen["S"][1]
+    st.session_state.stcollected = set()
+    st.session_state.totstars = set(tuple(x) for x in chosen["T"])
+    st.session_state.msg = ""
+
+    if st.session_state.diff == "advanced":
+        st.session_state.blocksvisited = set()
+
 
 if "diff" not in st.session_state:
     st.title("GridQuest")
@@ -26,15 +44,35 @@ if "diff" not in st.session_state:
 
     if st.button("Beginner"):
         st.session_state.diff = "beginner"
+        st.session_state.score = 0
+        st.session_state.start_time = time.time()
+        st.session_state.game_over=False
+        newpuzzle()
         st.rerun()
 
     if st.button("Advanced"):
         st.session_state.diff = "advanced"
+        st.session_state.score = 0
+        st.session_state.start_time = time.time()
+        st.session_state.game_over=False
+        newpuzzle()
         st.rerun()
     
     st.stop()
 
 st.title("GridQuest")
+timepassed = int(time.time() - st.session_state.start_time)
+timeleft = 60 - timepassed
+st.write(f"Time Left: {timeleft}s")
+st.write("Score: ",st.session_state.score)
+
+if timeleft <= 0:
+    st.session_state.game_over= True
+
+if st.session_state.game_over:
+    st.error("Time is up!")
+    st.success(f"Final Score: {st.session_state.score}")
+    st.stop()
 
 st.audio("music.mp3", format="audio/mp3")
 
@@ -44,15 +82,7 @@ if st.session_state.diff == "advanced":
 else:
     advmode = False
 
-if "chosen" not in st.session_state:
-    if st.session_state.diff == "beginner":
-        st.session_state.chosen = random.choice(beginner_puzzles) #https://docs.streamlit.io/develop/concepts/architecture/session-state
-    else:
-        st.session_state.chosen = random.choice(advanced_puzzles)
 chosen = st.session_state.chosen
-
-if "array" not in st.session_state:
-    st.session_state.array = setup(chosen)
 
 rows = chosen["rows"]
 cols = chosen["cols"]
@@ -129,6 +159,9 @@ st.write(grid, unsafe_allow_html=True)
 
 if st.session_state.Player_row == E_row and st.session_state.Player_col == E_col:
     if st.session_state.stcollected == st.session_state.totstars:
-        st.success("you reached the end!", icon="✅")
+        st.session_state.score += 1
+        st.success("puzzle solved, +1 point", icon="✅")
+        newpuzzle()
+        st.rerun()
     else:
-        st.success("u did NOT get all", icon="❌")
+        st.warning("Did not get all stars. Failed.", icon="❌")
