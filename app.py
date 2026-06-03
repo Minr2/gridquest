@@ -37,5 +37,5 @@ for r in range(rows):
 
 grid += "</div>"
 
-st.markdown(grid, unsafe_allow_html=True)
+st.write(grid, unsafe_allow_html=True)
 
