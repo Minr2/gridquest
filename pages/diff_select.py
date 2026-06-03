@@ -5,8 +5,8 @@ st.subheader("Select Difficulty")
 
 if st.button("Beginner"):
     st.session_state.diff = "beginner"
-    st.switch_page("app.py")
+    st.switch_page("app")
 
 if st.button("Advanced"):
     st.session_state.diff = "advanced"
-    st.switch_page("app.py")
+    st.switch_page("app")
